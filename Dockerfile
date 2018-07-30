@@ -53,14 +53,15 @@ curl -fsSL http://apache.osuosl.org/maven/maven-3/$MAVEN_VERSION/binaries/apache
 ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
+VOLUME /root/.m2
 # speed up Maven JVM a bit
 ENV MAVEN_OPTS="-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
 ENTRYPOINT ["/usr/bin/mvn"]
 # ----
 # Install GIT
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
-RUN git --version
+#RUN apk update && apk upgrade && \
+#   apk add --no-cache bash git openssh
+#RUN git --version
 # Install project dependencies and keep sources
 # make source folder
 RUN mkdir -p /usr/src/app
@@ -83,7 +84,7 @@ ARG artifactid
 ARG version
 ENV artifact ${artifactid}-${version}.jar 
 
-COPY /target/spring-boot-mongo-docker-${artifactId}-${version}.jar  app.jar
+RUN cp spring-boot-mongo-docker-*.jar  app.jar
 #ENV JAVA_OPTS=""
 #ENTRYPOINT exec java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar app.jar
 #EXPOSE 8080

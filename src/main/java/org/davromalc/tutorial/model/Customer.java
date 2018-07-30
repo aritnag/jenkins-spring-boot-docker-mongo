@@ -18,5 +18,6 @@ public class Customer {
     public String country;
     public String phonenumber;
     public String middleName;
+    public String office;
 
 }
