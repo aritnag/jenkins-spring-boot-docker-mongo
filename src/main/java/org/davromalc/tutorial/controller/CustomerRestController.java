@@ -1,6 +1,7 @@
 package org.davromalc.tutorial.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.davromalc.tutorial.model.Customer;
 import org.davromalc.tutorial.repository.CustomerRepository;
@@ -39,6 +40,13 @@ public class CustomerRestController {
 		final List<Customer> customer = repository.findByLastName(lastName);
 		log.info("Fetching customers from database {}" , customer);
 		return customer;
+	}
+	
+	@RequestMapping("customer/country/{country}")
+	public Object findByCountry(@PathVariable("country") String country){
+		final List<Customer> customer = repository.findAll();
+		log.info("Fetching customers from database {}" , customer);
+		return customer.removeIf(p -> !p.country.equalsIgnoreCase(country));
 	}
 	
 	@RequestMapping(value = "customer/" , method = RequestMethod.POST)
